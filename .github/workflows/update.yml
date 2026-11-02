@@ -18,13 +18,22 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         run: |
           python3 - <<'PY'
-          import socket, subprocess, re
-          for name in ['www.cs.hku.hk', 'cms12.cs.hku.hk']:
-              print(name, sorted(set(item[4][0] for item in socket.getaddrinfo(name,443))))
-              result=subprocess.run(['openssl','s_client','-connect',name+':443','-servername',name,'-showcerts'],input='',text=True,capture_output=True,timeout=20)
-              for cert in re.findall(r'-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----',result.stdout,re.S):
-                  print(subprocess.run(['openssl','x509','-noout','-subject','-issuer','-dates'],input=cert,text=True,capture_output=True).stdout)
-              print('\n'.join(line for line in (result.stdout+'\n'+result.stderr).splitlines() if 'Verify return' in line or 'verify error' in line))
+          import ssl, http.client, urllib.request
+          print('Proxy configured:',bool(urllib.request.getproxies()))
+          for version in (ssl.TLSVersion.TLSv1_3, ssl.TLSVersion.TLSv1_2):
+              context=ssl.create_default_context()
+              context.minimum_version=context.maximum_version=version
+              conn=http.client.HTTPSConnection('www.cs.hku.hk',context=context,timeout=20)
+              try:
+                  conn.connect()
+                  print(version,conn.sock.getpeercert().get('notAfter'))
+                  conn.request('GET','/events/',headers={'User-Agent':'HKU-Seminar-Calendar/1.0'})
+                  response=conn.getresponse()
+                  print(version,'HTTP',response.status,'has events',b'data-event_id=' in response.read())
+              except Exception as error:
+                  print(version,type(error).__name__,str(error))
+              finally:
+                  conn.close()
           PY
       - name: Fetch public HKU announcements
         run: python3 collect.py --output data/calendar.json

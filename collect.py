@@ -88,21 +88,30 @@ def download(url):
     except urllib.error.URLError as error:
         if not isinstance(error.reason, ssl.SSLCertVerificationError):
             raise
-        # The published DNS CNAME is cms12.cs.hku.hk. Its TLS hostname is
-        # verified with the system CA store; the HTTP Host remains the public
-        # website name. No certificate verification is disabled.
+        # Retry normal, fully verified HTTPS with explicit supported TLS versions.
+        # This also distinguishes a failed HTTP proxy path from the origin path.
         parsed = urllib.parse.urlsplit(url)
         if parsed.scheme != 'https' or parsed.netloc != 'www.cs.hku.hk':
             raise
-        conn = http.client.HTTPSConnection('cms12.cs.hku.hk', timeout=30, context=ssl.create_default_context())
-        try:
-            conn.request('GET', parsed.path+('?' + parsed.query if parsed.query else ''), headers={'Host':'www.cs.hku.hk','User-Agent':'HKU-Seminar-Calendar/1.0 (public event subscription)'})
-            response = conn.getresponse()
-            if response.status != 200:
-                raise RuntimeError('Verified HKU backend returned HTTP '+str(response.status))
-            body = response.read(5_000_001)
-        finally:
-            conn.close()
+        last_error = error
+        for version in (ssl.TLSVersion.TLSv1_3, ssl.TLSVersion.TLSv1_2):
+            context = ssl.create_default_context()
+            context.minimum_version = version
+            context.maximum_version = version
+            conn = http.client.HTTPSConnection('www.cs.hku.hk', timeout=30, context=context)
+            try:
+                conn.request('GET', parsed.path+('?' + parsed.query if parsed.query else ''), headers={'User-Agent':'HKU-Seminar-Calendar/1.0 (public event subscription)'})
+                response = conn.getresponse()
+                if response.status != 200:
+                    raise RuntimeError('Verified HKU origin returned HTTP '+str(response.status))
+                body = response.read(5_000_001)
+                break
+            except (ssl.SSLError, OSError) as retry_error:
+                last_error = retry_error
+            finally:
+                conn.close()
+        else:
+            raise last_error
     if len(body) > 5_000_000:
         raise ValueError('Upstream response exceeds 5 MB')
     return body
