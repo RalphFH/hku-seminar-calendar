@@ -97,6 +97,34 @@
       "created": 1793599359753,
       "modified": 1793599359753,
       "sequence": 0
+    },
+    {
+      "id": "185512-0",
+      "title": "Beyond the Lab: Reality Meets Edge and Embedded Intelligence",
+      "location": "CB308, Chow Yei Ching Building, The University of Hong Kong",
+      "url": "https://www.cs.hku.hk/events/beyond-the-lab-reality-meets-edge-and-embedded-intelligence/",
+      "start": 1791513000000,
+      "end": 1791516600000,
+      "category": "",
+      "status": "CONFIRMED",
+      "note": "",
+      "created": 1793600291956,
+      "modified": 1793600291956,
+      "sequence": 0
+    },
+    {
+      "id": "184275-0",
+      "title": "Streaming Condorcet Voting: Preference Aggregation with Limited Memory",
+      "location": "CB308, Chow Yei Ching Building, The University of Hong Kong",
+      "url": "https://www.cs.hku.hk/events/streaming-condorcet-voting-preference-aggregation-with-limited-memory/",
+      "start": 1791268200000,
+      "end": 1791271800000,
+      "category": "",
+      "status": "CONFIRMED",
+      "note": "",
+      "created": 1793600291956,
+      "modified": 1793600291956,
+      "sequence": 0
     }
   ],
   "issues": [
@@ -111,17 +139,20 @@
   "schema": 1,
   "source": "https://www.cs.hku.hk/events/",
   "checked": {
-    "https://www.cs.hku.hk/events/concept-world-models-decomposing-and-composing-the-physical-world/": 1793599359753,
-    "https://www.cs.hku.hk/events/classification-of-time-series-with-payloads-with-application-to-disease-screening-from-internet-data/": 1793599359753,
-    "https://www.cs.hku.hk/events/computational-pathology-and-integrative-genomics-precision-medicine/": 1793599359753,
-    "https://www.cs.hku.hk/events/automating-the-insurance-analytics-pipeline-rigorous-data-preparation-automl-and-domain-adapted-language-models/": 1793599359753,
+    "https://www.cs.hku.hk/events/concept-world-models-decomposing-and-composing-the-physical-world/": 1793600291956,
+    "https://www.cs.hku.hk/events/classification-of-time-series-with-payloads-with-application-to-disease-screening-from-internet-data/": 1793600291956,
+    "https://www.cs.hku.hk/events/computational-pathology-and-integrative-genomics-precision-medicine/": 1793600291956,
+    "https://www.cs.hku.hk/events/automating-the-insurance-analytics-pipeline-rigorous-data-preparation-automl-and-domain-adapted-language-models/": 1793600291956,
     "https://www.cs.hku.hk/events/time-series-forecastomg-in-electricity-spot-market-models-applications-and-industrial-translation/": 1793599359753,
     "https://www.cs.hku.hk/events/towards-reliable-software-from-metamorphic-to-intramorphic-testing/": 1793599359753,
     "https://www.cs.hku.hk/events/a-causal-framework-for-model-selection-bias/": 1793599359753,
-    "https://www.cs.hku.hk/events/the-geopolitical-situation-and-its-impact-on-economics-finance-and-re-insurance/": 1793599359753
+    "https://www.cs.hku.hk/events/the-geopolitical-situation-and-its-impact-on-economics-finance-and-re-insurance/": 1793599359753,
+    "https://www.cs.hku.hk/events/beyond-the-lab-reality-meets-edge-and-embedded-intelligence/": 1793600291956,
+    "https://www.cs.hku.hk/events/streaming-condorcet-voting-preference-aggregation-with-limited-memory/": 1793600291956
   },
-  "updatedAt": 1793599359753,
-  "attemptedAt": 1793599359753,
+  "updatedAt": 1793600291956,
+  "attemptedAt": 1793600291956,
   "error": "",
-  "warning": ""
+  "warning": "",
+  "collectorTransport": "Jina Reader public HTML fallback"
 }
