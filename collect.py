@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Fetch public HKU announcements with normal HTTPS verification; stdlib only."""
 import argparse
+import http.client
 import json
 import re
+import ssl
 import time
 import urllib.request
+import urllib.error
 import urllib.parse
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
@@ -76,14 +79,33 @@ def parse_cards(html):
 
 def download(url):
     request = urllib.request.Request(url, headers={'User-Agent': 'HKU-Seminar-Calendar/1.0 (public event subscription)', 'Accept': 'text/html,application/rss+xml'})
-    with urllib.request.urlopen(request, timeout=30) as response:
-        final = urllib.parse.urlsplit(response.geturl())
-        if final.scheme != 'https' or final.netloc != 'www.cs.hku.hk':
-            raise ValueError('Unexpected upstream redirect')
-        body = response.read(5_000_001)
-        if len(body) > 5_000_000:
-            raise ValueError('Upstream response exceeds 5 MB')
-        return body
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            final = urllib.parse.urlsplit(response.geturl())
+            if final.scheme != 'https' or final.netloc != 'www.cs.hku.hk':
+                raise ValueError('Unexpected upstream redirect')
+            body = response.read(5_000_001)
+    except urllib.error.URLError as error:
+        if not isinstance(error.reason, ssl.SSLCertVerificationError):
+            raise
+        # The published DNS CNAME is cms12.cs.hku.hk. Its TLS hostname is
+        # verified with the system CA store; the HTTP Host remains the public
+        # website name. No certificate verification is disabled.
+        parsed = urllib.parse.urlsplit(url)
+        if parsed.scheme != 'https' or parsed.netloc != 'www.cs.hku.hk':
+            raise
+        conn = http.client.HTTPSConnection('cms12.cs.hku.hk', timeout=30, context=ssl.create_default_context())
+        try:
+            conn.request('GET', parsed.path+('?' + parsed.query if parsed.query else ''), headers={'Host':'www.cs.hku.hk','User-Agent':'HKU-Seminar-Calendar/1.0 (public event subscription)'})
+            response = conn.getresponse()
+            if response.status != 200:
+                raise RuntimeError('Verified HKU backend returned HTTP '+str(response.status))
+            body = response.read(5_000_001)
+        finally:
+            conn.close()
+    if len(body) > 5_000_000:
+        raise ValueError('Upstream response exceeds 5 MB')
+    return body
 
 def signature(item):
     return tuple(item.get(key, '') for key in ['title', 'start', 'end', 'location', 'url', 'status', 'note'])

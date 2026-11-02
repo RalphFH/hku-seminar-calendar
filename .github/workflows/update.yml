@@ -14,6 +14,18 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
+      - name: Diagnose public TLS endpoints on manual runs
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          python3 - <<'PY'
+          import socket, subprocess, re
+          for name in ['www.cs.hku.hk', 'cms12.cs.hku.hk']:
+              print(name, sorted(set(item[4][0] for item in socket.getaddrinfo(name,443))))
+              result=subprocess.run(['openssl','s_client','-connect',name+':443','-servername',name,'-showcerts'],input='',text=True,capture_output=True,timeout=20)
+              for cert in re.findall(r'-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----',result.stdout,re.S):
+                  print(subprocess.run(['openssl','x509','-noout','-subject','-issuer','-dates'],input=cert,text=True,capture_output=True).stdout)
+              print('\n'.join(line for line in (result.stdout+'\n'+result.stderr).splitlines() if 'Verify return' in line or 'verify error' in line))
+          PY
       - name: Fetch public HKU announcements
         run: python3 collect.py --output data/calendar.json
       - name: Publish data snapshot
