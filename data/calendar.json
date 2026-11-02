@@ -1,0 +1,127 @@
+{
+  "records": [
+    {
+      "id": "187980-0",
+      "title": "Computational Pathology and Integrative Genomics Precision Medicine",
+      "location": "CB308, Chow Yei Ching Building, The University of Hong Kong",
+      "url": "https://www.cs.hku.hk/events/computational-pathology-and-integrative-genomics-precision-medicine/",
+      "start": 1793671200000,
+      "end": 1793674800000,
+      "category": "",
+      "status": "CONFIRMED",
+      "note": "",
+      "created": 1793599359753,
+      "modified": 1793599359753,
+      "sequence": 0
+    },
+    {
+      "id": "187117-0",
+      "title": "Automating the Insurance Analytics Pipeline: Rigorous Data Preparation, AutoML, and Domain-Adapted Language Models",
+      "location": "Room 301, Run Run Shaw Building",
+      "url": "https://www.cs.hku.hk/events/automating-the-insurance-analytics-pipeline-rigorous-data-preparation-automl-and-domain-adapted-language-models/",
+      "start": 1793946600000,
+      "end": 1793950200000,
+      "category": "",
+      "status": "CONFIRMED",
+      "note": "",
+      "created": 1793599359753,
+      "modified": 1793599359753,
+      "sequence": 0
+    },
+    {
+      "id": "187895-0",
+      "title": "Classification of time-series with payloads, with application to disease screening from internet data",
+      "location": "CB328, Chow Yei Ching Building, The University of Hong Kong",
+      "url": "https://www.cs.hku.hk/events/classification-of-time-series-with-payloads-with-application-to-disease-screening-from-internet-data/",
+      "start": 1794191400000,
+      "end": 1794195000000,
+      "category": "",
+      "status": "CONFIRMED",
+      "note": "",
+      "created": 1793599359753,
+      "modified": 1793599359753,
+      "sequence": 0
+    },
+    {
+      "id": "187881-0",
+      "title": "Time-Series Forecastomg in Electricity Spot Market: Models, Applications and Industrial Translation",
+      "location": "Room 301, Run Run Shaw Building",
+      "url": "https://www.cs.hku.hk/events/time-series-forecastomg-in-electricity-spot-market-models-applications-and-industrial-translation/",
+      "start": 1793158200000,
+      "end": 1793161800000,
+      "category": "",
+      "status": "CONFIRMED",
+      "note": "",
+      "created": 1793599359753,
+      "modified": 1793599359753,
+      "sequence": 0
+    },
+    {
+      "id": "187371-0",
+      "title": "Towards Reliable Software: From Metamorphic to Intramorphic Testing",
+      "location": "CB308, Chow Yei Ching Building, The University of Hong Kong",
+      "url": "https://www.cs.hku.hk/events/towards-reliable-software-from-metamorphic-to-intramorphic-testing/",
+      "start": 1793169000000,
+      "end": 1793172600000,
+      "category": "",
+      "status": "CONFIRMED",
+      "note": "",
+      "created": 1793599359753,
+      "modified": 1793599359753,
+      "sequence": 0
+    },
+    {
+      "id": "185858-0",
+      "title": "A Causal Framework for Model Selection Bias",
+      "location": "Room 301, Run Run Shaw Building",
+      "url": "https://www.cs.hku.hk/events/a-causal-framework-for-model-selection-bias/",
+      "start": 1791957600000,
+      "end": 1791961200000,
+      "category": "",
+      "status": "CONFIRMED",
+      "note": "",
+      "created": 1793599359753,
+      "modified": 1793599359753,
+      "sequence": 0
+    },
+    {
+      "id": "185856-0",
+      "title": "The Geopolitical Situation and its Impact on Economics, Finance, and Re/Insurance",
+      "location": "12, G/F, Meng Wah Complex, HKU",
+      "url": "https://www.cs.hku.hk/events/the-geopolitical-situation-and-its-impact-on-economics-finance-and-re-insurance/",
+      "start": 1792141200000,
+      "end": 1792144800000,
+      "category": "",
+      "status": "CONFIRMED",
+      "note": "",
+      "created": 1793599359753,
+      "modified": 1793599359753,
+      "sequence": 0
+    }
+  ],
+  "issues": [
+    {
+      "id": "187995-0",
+      "title": "Concept World Models: Decomposing and Composing the Physical World",
+      "url": "https://www.cs.hku.hk/events/concept-world-models-decomposing-and-composing-the-physical-world/",
+      "start": 1793588400000,
+      "reason": "官网结束时间早于或等于开始时间，待核实"
+    }
+  ],
+  "schema": 1,
+  "source": "https://www.cs.hku.hk/events/",
+  "checked": {
+    "https://www.cs.hku.hk/events/concept-world-models-decomposing-and-composing-the-physical-world/": 1793599359753,
+    "https://www.cs.hku.hk/events/classification-of-time-series-with-payloads-with-application-to-disease-screening-from-internet-data/": 1793599359753,
+    "https://www.cs.hku.hk/events/computational-pathology-and-integrative-genomics-precision-medicine/": 1793599359753,
+    "https://www.cs.hku.hk/events/automating-the-insurance-analytics-pipeline-rigorous-data-preparation-automl-and-domain-adapted-language-models/": 1793599359753,
+    "https://www.cs.hku.hk/events/time-series-forecastomg-in-electricity-spot-market-models-applications-and-industrial-translation/": 1793599359753,
+    "https://www.cs.hku.hk/events/towards-reliable-software-from-metamorphic-to-intramorphic-testing/": 1793599359753,
+    "https://www.cs.hku.hk/events/a-causal-framework-for-model-selection-bias/": 1793599359753,
+    "https://www.cs.hku.hk/events/the-geopolitical-situation-and-its-impact-on-economics-finance-and-re-insurance/": 1793599359753
+  },
+  "updatedAt": 1793599359753,
+  "attemptedAt": 1793599359753,
+  "error": "",
+  "warning": ""
+}
