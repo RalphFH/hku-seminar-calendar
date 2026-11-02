@@ -14,27 +14,6 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
-      - name: Diagnose public TLS endpoints on manual runs
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          python3 - <<'PY'
-          import ssl, http.client, urllib.request
-          print('Proxy configured:',bool(urllib.request.getproxies()))
-          for version in (ssl.TLSVersion.TLSv1_3, ssl.TLSVersion.TLSv1_2):
-              context=ssl.create_default_context()
-              context.minimum_version=context.maximum_version=version
-              conn=http.client.HTTPSConnection('www.cs.hku.hk',context=context,timeout=20)
-              try:
-                  conn.connect()
-                  print(version,conn.sock.getpeercert().get('notAfter'))
-                  conn.request('GET','/events/',headers={'User-Agent':'HKU-Seminar-Calendar/1.0'})
-                  response=conn.getresponse()
-                  print(version,'HTTP',response.status,'has events',b'data-event_id=' in response.read())
-              except Exception as error:
-                  print(version,type(error).__name__,str(error))
-              finally:
-                  conn.close()
-          PY
       - name: Fetch public HKU announcements
         run: python3 collect.py --output data/calendar.json
       - name: Publish data snapshot

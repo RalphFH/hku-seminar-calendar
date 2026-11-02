@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Fetch public HKU announcements with normal HTTPS verification; stdlib only."""
 import argparse
-import http.client
 import json
 import re
 import ssl
@@ -17,6 +16,7 @@ ORIGIN = 'https://www.cs.hku.hk'
 SOURCE = ORIGIN + '/events/'
 DAY = 86400000
 VOID = set('area base br col embed hr img input link meta param source track wbr'.split())
+USED_READER = False
 
 def source_url(value):
     url = urllib.parse.urljoin(ORIGIN, value or '')
@@ -78,40 +78,33 @@ def parse_cards(html):
     return list(unique.values())
 
 def download(url):
+    global USED_READER
     request = urllib.request.Request(url, headers={'User-Agent': 'HKU-Seminar-Calendar/1.0 (public event subscription)', 'Accept': 'text/html,application/rss+xml'})
     try:
-        with urllib.request.urlopen(request, timeout=30) as response:
+        with urllib.request.urlopen(request, timeout=15) as response:
             final = urllib.parse.urlsplit(response.geturl())
             if final.scheme != 'https' or final.netloc != 'www.cs.hku.hk':
                 raise ValueError('Unexpected upstream redirect')
             body = response.read(5_000_001)
-    except urllib.error.URLError as error:
-        if not isinstance(error.reason, ssl.SSLCertVerificationError):
-            raise
-        # Retry normal, fully verified HTTPS with explicit supported TLS versions.
-        # This also distinguishes a failed HTTP proxy path from the origin path.
+    except (urllib.error.URLError, TimeoutError, ssl.SSLError):
+        # Public HTML only; no credentials/cookies are sent to the reader.
+        # HTTPS to the reader uses the normal system CA and hostname checks.
         parsed = urllib.parse.urlsplit(url)
         if parsed.scheme != 'https' or parsed.netloc != 'www.cs.hku.hk':
             raise
-        last_error = error
-        for version in (ssl.TLSVersion.TLSv1_3, ssl.TLSVersion.TLSv1_2):
-            context = ssl.create_default_context()
-            context.minimum_version = version
-            context.maximum_version = version
-            conn = http.client.HTTPSConnection('www.cs.hku.hk', timeout=30, context=context)
+        reader_request = urllib.request.Request('https://r.jina.ai/'+url, headers={'User-Agent':'HKU-Seminar-Calendar/1.0 (public event subscription)','X-Respond-With':'html','X-Respond-Timing':'html','X-Cache-Tolerance':'1800'})
+        for attempt in range(3):
             try:
-                conn.request('GET', parsed.path+('?' + parsed.query if parsed.query else ''), headers={'User-Agent':'HKU-Seminar-Calendar/1.0 (public event subscription)'})
-                response = conn.getresponse()
-                if response.status != 200:
-                    raise RuntimeError('Verified HKU origin returned HTTP '+str(response.status))
-                body = response.read(5_000_001)
+                with urllib.request.urlopen(reader_request, timeout=55) as response:
+                    body = response.read(5_000_001)
+                USED_READER = True
+                print('Public reader fallback:',parsed.path)
                 break
-            except (ssl.SSLError, OSError) as retry_error:
-                last_error = retry_error
-            finally:
-                conn.close()
-        else:
-            raise last_error
+            except urllib.error.HTTPError as reader_error:
+                if reader_error.code != 429 or attempt == 2:
+                    raise
+                delay = min(5,max(1,int(reader_error.headers.get('Retry-After','2'))))
+                time.sleep(delay)
     if len(body) > 5_000_000:
         raise ValueError('Upstream response exceeds 5 MB')
     return body
@@ -164,7 +157,7 @@ def collect(output, fixture=None):
                     warning = '部分官网详情尚未识别，下次更新会重试'
         except Exception as error:
             warning = '部分官网详情暂时不可用：'+type(error).__name__
-    snapshot = dict(merge(old, incoming, now), schema=1, source=SOURCE, checked=checked, updatedAt=now, attemptedAt=now, error='', warning=warning)
+    snapshot = dict(merge(old, incoming, now), schema=1, source=SOURCE, checked=checked, updatedAt=now, attemptedAt=now, error='', warning=warning, collectorTransport='Jina Reader public HTML fallback' if USED_READER else 'Direct HTTPS')
     output.parent.mkdir(parents=True, exist_ok=True)
     temporary = output.with_suffix('.tmp')
     temporary.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2)+'\n')
