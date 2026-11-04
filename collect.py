@@ -17,6 +17,7 @@ SOURCE = ORIGIN + '/events/'
 DAY = 86400000
 VOID = set('area base br col embed hr img input link meta param source track wbr'.split())
 USED_READER = False
+READER_RETRY_STATUS = {408, 422, 425, 429, 500, 502, 503, 504}
 
 def source_url(value):
     url = urllib.parse.urljoin(ORIGIN, value or '')
@@ -100,10 +101,21 @@ def download(url):
                 USED_READER = True
                 print('Public reader fallback:',parsed.path)
                 break
-            except urllib.error.HTTPError as reader_error:
-                if reader_error.code != 429 or attempt == 2:
+            except (urllib.error.URLError, TimeoutError, ssl.SSLError) as reader_error:
+                # A valid HKU page has intermittently returned 422 through the
+                # reader during an origin certificate failure. Retry this known
+                # source, temporary HTTP failures, and connection errors only.
+                status = getattr(reader_error, 'code', None)
+                if (status is not None and status not in READER_RETRY_STATUS) or attempt == 2:
                     raise
-                delay = min(5,max(1,int(reader_error.headers.get('Retry-After','2'))))
+                delay = 2 ** (attempt + 1)
+                retry_after = (getattr(reader_error, 'headers', None) or {}).get('Retry-After')
+                if retry_after is not None:
+                    try:
+                        delay = min(5, max(1, int(retry_after)))
+                    except (TypeError, ValueError):
+                        pass
+                print('Public reader retry:', parsed.path, 'after', status or type(reader_error).__name__, 'attempt', attempt+2, 'of 3, in', delay, 'seconds')
                 time.sleep(delay)
     if len(body) > 5_000_000:
         raise ValueError('Upstream response exceeds 5 MB')

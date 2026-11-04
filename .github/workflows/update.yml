@@ -14,6 +14,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
+      - name: Check collector failure recovery
+        run: python3 -m unittest discover -v
       - name: Fetch public HKU announcements
         run: python3 collect.py --output data/calendar.json
       - name: Publish data snapshot
