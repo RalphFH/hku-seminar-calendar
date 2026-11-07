@@ -153,21 +153,21 @@
   "schema": 1,
   "source": "https://www.cs.hku.hk/events/",
   "checked": {
-    "https://www.cs.hku.hk/events/concept-world-models-decomposing-and-composing-the-physical-world/": 1794019353951,
-    "https://www.cs.hku.hk/events/classification-of-time-series-with-payloads-with-application-to-disease-screening-from-internet-data/": 1794019353951,
-    "https://www.cs.hku.hk/events/computational-pathology-and-integrative-genomics-precision-medicine/": 1794019353951,
-    "https://www.cs.hku.hk/events/automating-the-insurance-analytics-pipeline-rigorous-data-preparation-automl-and-domain-adapted-language-models/": 1794019353951,
-    "https://www.cs.hku.hk/events/time-series-forecastomg-in-electricity-spot-market-models-applications-and-industrial-translation/": 1794019353951,
-    "https://www.cs.hku.hk/events/towards-reliable-software-from-metamorphic-to-intramorphic-testing/": 1794019353951,
-    "https://www.cs.hku.hk/events/a-causal-framework-for-model-selection-bias/": 1794019353951,
+    "https://www.cs.hku.hk/events/concept-world-models-decomposing-and-composing-the-physical-world/": 1794045361559,
+    "https://www.cs.hku.hk/events/classification-of-time-series-with-payloads-with-application-to-disease-screening-from-internet-data/": 1794045361559,
+    "https://www.cs.hku.hk/events/computational-pathology-and-integrative-genomics-precision-medicine/": 1794045361559,
+    "https://www.cs.hku.hk/events/automating-the-insurance-analytics-pipeline-rigorous-data-preparation-automl-and-domain-adapted-language-models/": 1794045361559,
+    "https://www.cs.hku.hk/events/time-series-forecastomg-in-electricity-spot-market-models-applications-and-industrial-translation/": 1794045361559,
+    "https://www.cs.hku.hk/events/towards-reliable-software-from-metamorphic-to-intramorphic-testing/": 1794045361559,
+    "https://www.cs.hku.hk/events/a-causal-framework-for-model-selection-bias/": 1794045361559,
     "https://www.cs.hku.hk/events/the-geopolitical-situation-and-its-impact-on-economics-finance-and-re-insurance/": 1794019353951,
-    "https://www.cs.hku.hk/events/beyond-the-lab-reality-meets-edge-and-embedded-intelligence/": 1794006026675,
+    "https://www.cs.hku.hk/events/beyond-the-lab-reality-meets-edge-and-embedded-intelligence/": 1794045361559,
     "https://www.cs.hku.hk/events/streaming-condorcet-voting-preference-aggregation-with-limited-memory/": 1793600291956,
-    "https://www.cs.hku.hk/events/cds-distinguished-lecture-series-shaw-prize-laureate-talk-to-diffuse-or-not-one-step-generative-modeling-via-wasserstein-gradient-flows/": 1794019353951
+    "https://www.cs.hku.hk/events/cds-distinguished-lecture-series-shaw-prize-laureate-talk-to-diffuse-or-not-one-step-generative-modeling-via-wasserstein-gradient-flows/": 1794045361559
   },
-  "updatedAt": 1794019353951,
-  "attemptedAt": 1794019353951,
+  "updatedAt": 1794045361559,
+  "attemptedAt": 1794045361559,
   "error": "",
   "warning": "",
-  "collectorTransport": "Jina Reader public HTML fallback"
+  "collectorTransport": "Direct HTTPS"
 }
